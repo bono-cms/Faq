@@ -1,0 +1,2 @@
+# Faq
+Faq module
