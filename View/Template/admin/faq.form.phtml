@@ -1,53 +1,47 @@
 <?php
 
-use Krystal\Form\Widget\CheckBoxWidget;
+use Krystal\Form\Element;
 
 ?>
 
 <form>
 	<div class="well clearfix">
-		
-		<input type="hidden" name="faq[id]" value="<?php echo $faq->getId(); ?>" />
+        <?php echo Element::hidden('faq[id]', $faq->getId()); ?>
 		
 		<div class="form-group clearfix">
 			<label class="col-lg-2 control-label"><?php $this->show('Question'); ?></label>
 			<div class="col-lg-10">
 				<div class="input-group">
-					<input type="text" name="faq[question]" class="form-control" value="<?php echo $faq->getQuestion(); ?>" placeholder="<?php $this->show('Question title'); ?>" />
+                    <?php echo Element::text('faq[question]', $faq->getQuestion(), array('class' => 'form-control', 'placeholder' => $this->translate('Question title'))); ?>
 					<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
 				</div>
 			</div>
 		</div>
 		
-		
 		<div class="form-group clearfix">
 			<label class="col-lg-2 control-label"><?php $this->show('Answer'); ?></label>
 			<div class="col-lg-10">
-				<textarea name="faq[answer]"><?php echo $faq->getAnswer(); ?></textarea>
+				<?php echo Element::textarea('faq[answer]', $faq->getAnswer()); ?>
 			</div>
 		</div>
 		
-		
 		<div class="options">
-			
 			<div class="form-group clearfix">
 				<label class="col-lg-2 control-label"><?php $this->show('Published'); ?></label>
 				<div class="col-lg-10">
-					<?php echo CheckBoxWidget::render(array('name' => 'faq[published]', 'class' => 'form-control'), $faq->getPublished()); ?>
+                    <?php echo Element::checkbox('faq[published]', $faq->getPublished(), array('class' => 'form-control')); ?>
 				</div>
 			</div>
-			
 			
 			<div class="form-group clearfix">
 				<label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
 				<div class="col-lg-10">
 					<div class="input-group">
-						<input type="number" min="0" name="faq[order]" class="form-control" value="<?php echo $faq->getOrder(); ?>" placeholder="<?php $this->show('Order of this question'); ?>" />
+						<?php echo Element::number('faq[order]', $faq->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Order of this question'))); ?>
 						<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
 					</div>
 				</div>
 			</div>
-			
 		</div>
 	</div>
 	
@@ -62,6 +56,7 @@ use Krystal\Form\Widget\CheckBoxWidget;
 	<button data-button="add-create" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
 	
 	<?php endif; ?>
+    
 	<button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
 	<button data-button="cancel" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
 	
