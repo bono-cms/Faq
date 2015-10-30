@@ -4,60 +4,60 @@ use Krystal\Form\Element;
 
 ?>
 
-<form>
-	<div class="well clearfix">
+<form data-group="faq">
+    <div class="well clearfix">
         <?php echo Element::hidden('faq[id]', $faq->getId()); ?>
-		
-		<div class="form-group clearfix">
-			<label class="col-lg-2 control-label"><?php $this->show('Question'); ?></label>
-			<div class="col-lg-10">
-				<div class="input-group">
+        
+        <div class="form-group clearfix">
+            <label class="col-lg-2 control-label"><?php $this->show('Question'); ?></label>
+            <div class="col-lg-10">
+                <div class="input-group">
                     <?php echo Element::text('faq[question]', $faq->getQuestion(), array('class' => 'form-control', 'placeholder' => $this->translate('Question title'))); ?>
-					<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-				</div>
-			</div>
-		</div>
-		
-		<div class="form-group clearfix">
-			<label class="col-lg-2 control-label"><?php $this->show('Answer'); ?></label>
-			<div class="col-lg-10">
-				<?php echo Element::textarea('faq[answer]', $faq->getAnswer()); ?>
-			</div>
-		</div>
-		
-		<div class="options">
-			<div class="form-group clearfix">
-				<label class="col-lg-2 control-label"><?php $this->show('Published'); ?></label>
-				<div class="col-lg-10">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group clearfix">
+            <label class="col-lg-2 control-label"><?php $this->show('Answer'); ?></label>
+            <div class="col-lg-10">
+                <?php echo Element::textarea('faq[answer]', $faq->getAnswer()); ?>
+            </div>
+        </div>
+        
+        <div class="options">
+            <div class="form-group clearfix">
+                <label class="col-lg-2 control-label"><?php $this->show('Published'); ?></label>
+                <div class="col-lg-10">
                     <?php echo Element::checkbox('faq[published]', $faq->getPublished(), array('class' => 'form-control')); ?>
-				</div>
-			</div>
-			
-			<div class="form-group clearfix">
-				<label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
-				<div class="col-lg-10">
-					<div class="input-group">
-						<?php echo Element::number('faq[order]', $faq->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Order of this question'))); ?>
-						<span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<?php if ($faq->getId()): ?>
-	
-	<button data-button="save" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
-	<button data-button="save-create" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
-	
-	<?php else: ?>
-	
-	<button data-button="add" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
-	<button data-button="add-create" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
-	
-	<?php endif; ?>
+                </div>
+            </div>
+            
+            <div class="form-group clearfix">
+                <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        <?php echo Element::number('faq[order]', $faq->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Order of this question'))); ?>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     
-	<button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
-	<button data-button="cancel" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
-	
+    <?php if ($faq->getId()): ?>
+    
+    <button data-button="save" data-url="<?php echo $this->url('Faq:Admin:Edit@updateAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
+    <button data-button="save-create" data-back-url="<?php echo $this->url('Faq:Admin:Add@indexAction'); ?>" data-url="<?php echo $this->url('Faq:Admin:Edit@updateAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+    
+    <?php else: ?>
+    
+    <button data-button="add" data-back-url="<?php echo $this->url('Faq:Admin:Edit@indexAction', null); ?>" data-url="<?php echo $this->url('Faq:Admin:Add@addAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+    <button data-button="add-create" data-url="<?php echo $this->url('Faq:Admin:Add@addAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
+    
+    <?php endif; ?>
+    
+    <button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
+    <button data-button="cancel" data-url="<?php echo $this->url('Faq:Admin:Browser@indexAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
+    
 </form>
