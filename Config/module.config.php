@@ -10,11 +10,11 @@
  */
 
 return array(
-	'module' => array(
-		'name'	=> 'Faq',
-		'url'	=> '/admin/module/faq',
-		'icon'	=> '/module/Faq/Assets/faq.png',
-		'order' => 1,
-		'description' => 'FAQ module allows you to manage set of FAQs on your site',
-	)
+    'module' => array(
+        'name'  => 'Faq',
+        'url'   => '/admin/module/faq',
+        'icon'  => '/module/Faq/Assets/faq.png',
+        'order' => 1,
+        'description' => 'FAQ module allows you to manage set of FAQs on your site',
+    )
 );

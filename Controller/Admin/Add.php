@@ -15,45 +15,45 @@ use Krystal\Stdlib\VirtualEntity;
 
 final class Add extends AbstractFaq
 {
-	/**
-	 * Shows adding form
-	 * 
-	 * @return string
-	 */
-	public function indexAction()
-	{
-		$this->loadSharedPlugins();
+    /**
+     * Shows adding form
+     * 
+     * @return string
+     */
+    public function indexAction()
+    {
+        $this->loadSharedPlugins();
 
-		$faq = new VirtualEntity();
-		$faq->setPublished(true);
+        $faq = new VirtualEntity();
+        $faq->setPublished(true);
 
-		return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
-			'title' => 'Add new FAQ',
-			'faq' => $faq
-		)));
-	}
+        return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
+            'title' => 'Add new FAQ',
+            'faq' => $faq
+        )));
+    }
 
-	/**
-	 * Adds a FAQ
-	 * 
-	 * @return string
-	 */
-	public function addAction()
-	{
-		$formValidator = $this->getValidator($this->request->getPost('faq'));
+    /**
+     * Adds a FAQ
+     * 
+     * @return string
+     */
+    public function addAction()
+    {
+        $formValidator = $this->getValidator($this->request->getPost('faq'));
 
-		if ($formValidator->isValid()) {
+        if ($formValidator->isValid()) {
 
-			$faqManager = $this->getFaqManager();
+            $faqManager = $this->getFaqManager();
 
-			if ($faqManager->add($this->request->getPost('faq'))) {
-				$this->flashBag->set('success', 'A faq has been created successfully');
-				return $faqManager->getLastId();
-			}
+            if ($faqManager->add($this->request->getPost('faq'))) {
+                $this->flashBag->set('success', 'A faq has been created successfully');
+                return $faqManager->getLastId();
+            }
 
-		} else {
+        } else {
 
-			return $formValidator->getErrors();
-		}
-	}
+            return $formValidator->getErrors();
+        }
+    }
 }

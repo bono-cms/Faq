@@ -16,13 +16,13 @@ use Faq\Service\FaqManager;
 
 final class Module extends AbstractCmsModule
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getServiceProviders()
-	{
-		return array(
-			'faqManager' => new FaqManager($this->getMapper('/Faq/Storage/MySQL/FaqMapper'), $this->getHistoryManager())
-		);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    public function getServiceProviders()
+    {
+        return array(
+            'faqManager' => new FaqManager($this->getMapper('/Faq/Storage/MySQL/FaqMapper'), $this->getHistoryManager())
+        );
+    }
 }

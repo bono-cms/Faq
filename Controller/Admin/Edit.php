@@ -13,50 +13,50 @@ namespace Faq\Controller\Admin;
 
 final class Edit extends AbstractFaq
 {
-	/**
-	 * Shows edit form
-	 * 
-	 * @param string $id
-	 * @return string
-	 */
-	public function indexAction($id)
-	{
-		$faq = $this->getFaqManager()->fetchById($id);
+    /**
+     * Shows edit form
+     * 
+     * @param string $id
+     * @return string
+     */
+    public function indexAction($id)
+    {
+        $faq = $this->getFaqManager()->fetchById($id);
 
-		if ($faq !== false) {
-			$this->loadSharedPlugins();
+        if ($faq !== false) {
+            $this->loadSharedPlugins();
 
-			return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
-				'title' => 'Edit the FAQ',
-				'faq' => $faq
-			)));
+            return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
+                'title' => 'Edit the FAQ',
+                'faq' => $faq
+            )));
 
-		} else {
+        } else {
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 
-	/**
-	 * Updates a FAQ
-	 * 
-	 * @return string
-	 */
-	public function updateAction()
-	{
-		$formValidator = $this->getValidator($this->request->getPost('faq'));
+    /**
+     * Updates a FAQ
+     * 
+     * @return string
+     */
+    public function updateAction()
+    {
+        $formValidator = $this->getValidator($this->request->getPost('faq'));
 
-		if ($formValidator->isValid()) {
+        if ($formValidator->isValid()) {
 
-			if ($this->getFaqManager()->update($this->request->getPost('faq'))) {
+            if ($this->getFaqManager()->update($this->request->getPost('faq'))) {
 
-				$this->flashBag->set('success', 'The FAQ has been updated successfully');
-				return '1';
-			}
+                $this->flashBag->set('success', 'The FAQ has been updated successfully');
+                return '1';
+            }
 
-		} else {
+        } else {
 
-			return $formValidator->getErrors();
-		}
-	}
+            return $formValidator->getErrors();
+        }
+    }
 }

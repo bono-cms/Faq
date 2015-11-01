@@ -15,13 +15,13 @@ use Cms\Controller\Admin\AbstractController;
 
 abstract class AbstractAdminController extends AbstractController
 {
-	/**
-	 * Returns FAQ manager
-	 * 
-	 * @return \Faq\Service\FaqManager
-	 */
-	final protected function getFaqManager()
-	{
-		return $this->getModuleService('faqManager');
-	}
+    /**
+     * Returns FAQ manager
+     * 
+     * @return \Faq\Service\FaqManager
+     */
+    final protected function getFaqManager()
+    {
+        return $this->getModuleService('faqManager');
+    }
 }
