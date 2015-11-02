@@ -25,14 +25,14 @@ final class Edit extends AbstractFaq
 
         if ($faq !== false) {
             $this->loadSharedPlugins();
+            $this->loadBreadcrumbs('Edit the FAQ');
 
-            return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
+            return $this->view->render($this->getTemplatePath(), array(
                 'title' => 'Edit the FAQ',
                 'faq' => $faq
-            )));
+            ));
 
         } else {
-
             return false;
         }
     }
@@ -47,15 +47,12 @@ final class Edit extends AbstractFaq
         $formValidator = $this->getValidator($this->request->getPost('faq'));
 
         if ($formValidator->isValid()) {
-
             if ($this->getFaqManager()->update($this->request->getPost('faq'))) {
-
                 $this->flashBag->set('success', 'The FAQ has been updated successfully');
                 return '1';
             }
 
         } else {
-
             return $formValidator->getErrors();
         }
     }

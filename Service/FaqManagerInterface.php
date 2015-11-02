@@ -16,14 +16,6 @@ use Krystal\Stdlib\VirtualEntity;
 interface FaqManagerInterface
 {
     /**
-     * Returns FAQ breadcrumbs for view layer
-     * 
-     * @param \Krystal\Stdlib\VirtualEntity $faq
-     * @return array
-     */
-    public function getBreadcrumbs(VirtualEntity $faq);
-
-    /**
      * Updates published states by their associated ids
      * 
      * @param array $pair

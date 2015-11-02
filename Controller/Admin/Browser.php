@@ -43,14 +43,9 @@ final class Browser extends AbstractAdminController
     private function loadPlugins()
     {
         $this->view->getPluginBag()
-                   ->appendScript($this->getWithAssetPath('/admin/browser.js'));
+                   ->appendScript('@Faq/admin/browser.js');
 
-        $this->view->getBreadcrumbBag()->add(array(
-            array(
-                'name' => 'FAQ',
-                'link' => '#'
-            )
-        ));
+        $this->view->getBreadcrumbBag()->addOne('FAQ');
     }
 
     /**
@@ -61,7 +56,6 @@ final class Browser extends AbstractAdminController
     public function deleteSelectedAction()
     {
         if ($this->request->hasPost('toDelete')) {
-
             $this->getFaqManager()->deleteByIds(array_keys($this->request->getPost('toDelete')));
             $this->flashBag->set('success', 'Selected FAQS have been removed successfully');
             
@@ -80,7 +74,6 @@ final class Browser extends AbstractAdminController
     public function saveAction()
     {
         if ($this->request->hasPost('published', 'order') && $this->request->isAjax()) {
-
             $published = $this->request->getPost('published');
             $orders = $this->request->getPost('order');
 
@@ -90,7 +83,6 @@ final class Browser extends AbstractAdminController
             $faqManager->updateOrders($orders);
 
             $this->flashBag->set('success', 'Settings have been save successfully');
-
             return '1';
         }
     }
@@ -103,11 +95,9 @@ final class Browser extends AbstractAdminController
     public function deleteAction()
     {
         if ($this->request->hasPost('id') && $this->request->isAjax()) {
-
             $id = $this->request->getPost('id');
 
             if ($this->getFaqManager()->deleteById($id)) {
-
                 $this->flashBag->set('success', 'The FAQ has been removed successfully');
                 return '1';
             }

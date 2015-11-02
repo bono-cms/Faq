@@ -23,8 +23,7 @@ final class Faq extends AbstractController
      */
     public function indexAction($id)
     {
-        $pageManager = $this->getService('Pages', 'pageManager');
-        $page = $pageManager->fetchById($id);
+        $page = $this->getService('Pages', 'pageManager')->fetchById($id);
 
         if ($page !== false) {
             $this->loadSitePlugins();
@@ -32,7 +31,7 @@ final class Faq extends AbstractController
             $faqManager = $this->getModuleService('faqManager');
 
             // Append breadcrumbs no
-            $this->view->getBreadcrumbBag()->add($faqManager->getBreadcrumbs($page));
+            $this->view->getBreadcrumbBag()->addOne($faq->getTitle());
 
             return $this->view->render('faq', array(
                 'faqs' => $faqManager->fetchAllPublished(),
@@ -40,7 +39,6 @@ final class Faq extends AbstractController
             ));
 
         } else {
-
             return false;
         }
     }

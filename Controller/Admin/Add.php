@@ -23,14 +23,15 @@ final class Add extends AbstractFaq
     public function indexAction()
     {
         $this->loadSharedPlugins();
+        $this->loadBreadcrumbs('Add new FAQ');
 
         $faq = new VirtualEntity();
         $faq->setPublished(true);
 
-        return $this->view->render($this->getTemplatePath(), $this->getWithSharedVars(array(
+        return $this->view->render($this->getTemplatePath(), array(
             'title' => 'Add new FAQ',
             'faq' => $faq
-        )));
+        ));
     }
 
     /**
@@ -43,7 +44,6 @@ final class Add extends AbstractFaq
         $formValidator = $this->getValidator($this->request->getPost('faq'));
 
         if ($formValidator->isValid()) {
-
             $faqManager = $this->getFaqManager();
 
             if ($faqManager->add($this->request->getPost('faq'))) {
@@ -52,7 +52,6 @@ final class Add extends AbstractFaq
             }
 
         } else {
-
             return $formValidator->getErrors();
         }
     }

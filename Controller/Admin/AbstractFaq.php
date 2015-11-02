@@ -35,26 +35,15 @@ abstract class AbstractFaq extends AbstractAdminController
     }
 
     /**
-     * Returns shared variables
+     * Loads breadcrumbs
      * 
-     * @param array $overrides
-     * @return array
+     * @param string $title
+     * @return void
      */
-    final protected function getWithSharedVars(array $overrides)
+    final protected function loadBreadcrumbs($title)
     {
-        $this->view->getBreadcrumbBag()->add(array(
-            array(
-                'name' => 'FAQ',
-                'link' => 'Faq:Admin:Browser@indexAction'
-            ),
-            
-            array(
-                'name' => $overrides['title'],
-                'link' => '#'
-            )
-        ));
-        
-        return $overrides;
+        $this->view->getBreadcrumbBag()->addOne('FAQ', 'Faq:Admin:Browser@indexAction')
+                                       ->addOne($title);
     }
 
     /**
@@ -65,7 +54,7 @@ abstract class AbstractFaq extends AbstractAdminController
     final protected function loadSharedPlugins()
     {
         $this->view->getPluginBag()
-                   ->appendScript($this->getWithAssetPath('/admin/faq.form.js'))
+                   ->appendScript('@Faq/admin/faq.form.js')
                    ->load($this->getWysiwygPluginName());
     }
 

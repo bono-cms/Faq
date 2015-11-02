@@ -47,22 +47,6 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
     }
 
     /**
-     * Returns FAQ breadcrumbs for view layer
-     * 
-     * @param \Krystal\Stdlib\VirtualEntity $faq
-     * @return array
-     */
-    public function getBreadcrumbs(VirtualEntity $faq)
-    {
-        return array(
-            array(
-                'name' => $faq->getTitle(),
-                'link' => '#'
-            )
-        );
-    }
-
-    /**
      * Tracks activity
      * 
      * @param string $message
@@ -212,12 +196,9 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
         $name = Filter::escape($this->faqMapper->fetchQuestionById($id));
 
         if ($this->faqMapper->deleteById($id)) {
-
             $this->track('FAQ "%s" has been removed', $name);
             return true;
-
         } else {
-
             return false;
         }
     }
