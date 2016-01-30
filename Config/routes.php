@@ -10,49 +10,38 @@
  */
 
 return array(
-    
     '/module/faq' => array(
         'controller' => 'Faq@indexAction'
     ),
     
     '/admin/module/faq' => array(
-        'controller' => 'Admin:Browser@indexAction',
+        'controller' => 'Admin:Faq@gridAction',
     ),
     
     '/admin/module/faq/page/(:var)' => array(
-        'controller' => 'Admin:Browser@indexAction',
+        'controller' => 'Admin:Faq@gridAction',
     ),
     
-    '/admin/module/faq/delete.ajax' => array(
-        'controller' => 'Admin:Browser@deleteAction',
+    '/admin/module/faq/delete' => array(
+        'controller' => 'Admin:Faq@deleteAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/faq/delete-selected.ajax' => array(
-        'controller' => 'Admin:Browser@deleteSelectedAction',
-        'disallow' => array('guest')
-    ),
-    
-    '/admin/module/faq/save.ajax' => array(
-        'controller' => 'Admin:Browser@saveAction',
+    '/admin/module/faq/tweak' => array(
+        'controller' => 'Admin:Faq@tweakAction',
         'disallow' => array('guest')
     ),
     
     '/admin/module/faq/add' => array(
-        'controller' => 'Admin:Add@indexAction'
-    ),
-    
-    '/admin/module/faq/add.ajax' => array(
-        'controller' => 'Admin:Add@addAction',
-        'disallow' => array('guest')
+        'controller' => 'Admin:Faq@addAction'
     ),
     
     '/admin/module/faq/edit/(:var)' => array(
-        'controller' => 'Admin:Edit@indexAction'
+        'controller' => 'Admin:Faq@editAction'
     ),
     
-    '/admin/module/faq/edit.ajax' => array(
-        'controller' => 'Admin:Edit@updateAction',
+    '/admin/module/faq/save' => array(
+        'controller' => 'Admin:Faq@saveAction',
         'disallow' => array('guest')
-    ),
+    )
 );
