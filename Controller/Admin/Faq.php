@@ -38,7 +38,6 @@ final class Faq extends AbstractController
     {
         // Load view plugins
         $this->view->getPluginBag()
-                   ->appendScript('@Faq/admin/faq.form.js')
                    ->load($this->getWysiwygPluginName());
 
         // Append breadcrumbs
@@ -131,27 +130,9 @@ final class Faq extends AbstractController
      */
     public function deleteAction()
     {
-        // Batch removal
-        if ($this->request->hasPost('toDelete')) {
-            $this->getFaqManager()->deleteByIds(array_keys($this->request->getPost('toDelete')));
-            $this->flashBag->set('success', 'Selected FAQS have been removed successfully');
-            
-        } else {
-            $this->flashBag->set('warning', 'You should select at least one FAQ to remove');
-        }
-
-        // Single removal
-        if ($this->request->hasPost('id') && $this->request->isAjax()) {
-            $id = $this->request->getPost('id');
-
-            if ($this->getFaqManager()->deleteById($id)) {
-                $this->flashBag->set('success', 'The FAQ has been removed successfully');
-            }
-        }
-
-        return '1';
+        return $this->invokeRemoval('faqManager');
     }
-    
+
     /**
      * Persists a faq
      * 
@@ -161,7 +142,7 @@ final class Faq extends AbstractController
     {
         $input = $this->request->getPost('faq');
 
-        $formValidator = $this->validatorFactory->build(array(
+        return $this->invokeSave('faqManager', $input['id'], $input, array(
             'input' => array(
                 'source' => $input,
                 'definition' => array(
@@ -170,24 +151,5 @@ final class Faq extends AbstractController
                 )
             )
         ));
-
-        if ($formValidator->isValid()) {
-            $faqManager = $this->getFaqManager();
-
-            if ($input['id']) {
-                if ($faqManager->update($input)) {
-                    $this->flashBag->set('success', 'The FAQ has been updated successfully');
-                    return '1';
-                }
-
-            } else {
-                if ($faqManager->add($input)) {
-                    $this->flashBag->set('success', 'A faq has been created successfully');
-                    return $faqManager->getLastId();
-                }
-            }
-        } else {
-            return $formValidator->getErrors();
-        }
     }
 }
