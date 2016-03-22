@@ -22,7 +22,7 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
      */
     public static function getTableName()
     {
-        return 'bono_module_faq';
+        return self::getWithPrefix('bono_module_faq');
     }
 
     /**
