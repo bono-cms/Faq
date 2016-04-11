@@ -94,7 +94,7 @@ final class Faq extends AbstractController
                    ->addOne('FAQ');
 
         $paginator = $this->getFaqManager()->getPaginator();
-        $paginator->setUrl('/admin/module/faq/page/(:var)');
+        $paginator->setUrl($this->createUrl('Faq:Admin:Faq@gridAction', array(), 1));
 
         return $this->view->render('browser', array(
             'paginator' => $paginator,
