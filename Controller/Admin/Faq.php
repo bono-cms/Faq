@@ -87,9 +87,6 @@ final class Faq extends AbstractController
      */ 
     public function gridAction($page = 1)
     {
-        $this->view->getPluginBag()
-                   ->appendScript('@Faq/admin/browser.js');
-
         $this->view->getBreadcrumbBag()
                    ->addOne('FAQ');
 
@@ -126,11 +123,12 @@ final class Faq extends AbstractController
     /**
      * Deletes a FAQ by its associated id
      * 
+     * @param string $id
      * @return string
      */
-    public function deleteAction()
+    public function deleteAction($id)
     {
-        return $this->invokeRemoval('faqManager');
+        return $this->invokeRemoval('faqManager', $id);
     }
 
     /**

@@ -22,7 +22,7 @@ return array(
         'controller' => 'Admin:Faq@gridAction',
     ),
     
-    '/admin/module/faq/delete' => array(
+    '/admin/module/faq/delete/(:var)' => array(
         'controller' => 'Admin:Faq@deleteAction',
         'disallow' => array('guest')
     ),
