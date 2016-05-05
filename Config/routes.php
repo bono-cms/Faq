@@ -14,33 +14,33 @@ return array(
         'controller' => 'Faq@indexAction'
     ),
     
-    '/admin/module/faq' => array(
+    '/%s/module/faq' => array(
         'controller' => 'Admin:Faq@gridAction',
     ),
     
-    '/admin/module/faq/page/(:var)' => array(
+    '/%s/module/faq/page/(:var)' => array(
         'controller' => 'Admin:Faq@gridAction',
     ),
     
-    '/admin/module/faq/delete/(:var)' => array(
+    '/%s/module/faq/delete/(:var)' => array(
         'controller' => 'Admin:Faq@deleteAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/faq/tweak' => array(
+    '/%s/module/faq/tweak' => array(
         'controller' => 'Admin:Faq@tweakAction',
         'disallow' => array('guest')
     ),
     
-    '/admin/module/faq/add' => array(
+    '/%s/module/faq/add' => array(
         'controller' => 'Admin:Faq@addAction'
     ),
     
-    '/admin/module/faq/edit/(:var)' => array(
+    '/%s/module/faq/edit/(:var)' => array(
         'controller' => 'Admin:Faq@editAction'
     ),
     
-    '/admin/module/faq/save' => array(
+    '/%s/module/faq/save' => array(
         'controller' => 'Admin:Faq@saveAction',
         'disallow' => array('guest')
     )
