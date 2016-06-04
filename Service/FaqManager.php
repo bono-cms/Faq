@@ -64,11 +64,11 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
     protected function toEntity(array $faq)
     {
         $entity = new VirtualEntity();
-        $entity->setId((int) $faq['id'])
-            ->setQuestion(Filter::escape($faq['question']))
-            ->setAnswer(Filter::escapeContent($faq['answer']))
-            ->setOrder((int) $faq['order'])
-            ->setPublished((bool) $faq['published']);
+        $entity->setId($faq['id'], VirtualEntity::FILTER_INT)
+            ->setQuestion($faq['question'], VirtualEntity::FILTER_TAGS)
+            ->setAnswer($faq['answer'], VirtualEntity::FILTER_SAFE_TAGS)
+            ->setOrder($faq['order'], VirtualEntity::FILTER_INT)
+            ->setPublished($faq['published'], VirtualEntity::FILTER_BOOL);
 
         return $entity;
     }
