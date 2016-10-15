@@ -65,7 +65,7 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
     {
         $entity = new VirtualEntity();
         $entity->setId($faq['id'], VirtualEntity::FILTER_INT)
-            ->setQuestion($faq['question'], VirtualEntity::FILTER_TAGS)
+            ->setQuestion($faq['question'], VirtualEntity::FILTER_HTML)
             ->setAnswer($faq['answer'], VirtualEntity::FILTER_SAFE_TAGS)
             ->setOrder($faq['order'], VirtualEntity::FILTER_INT)
             ->setPublished($faq['published'], VirtualEntity::FILTER_BOOL);
