@@ -13,9 +13,35 @@ return array(
     '/module/faq' => array(
         'controller' => 'Faq@indexAction'
     ),
+
+    // Category routes
+    '/%s/module/faq/category/add' => array(
+        'controller' => 'Admin:Category@addAction',
+    ),
+    
+    '/%s/module/faq/category/edit/(:var)' => array(
+        'controller' => 'Admin:Category@editAction',
+    ),
+    
+    '/%s/module/faq/category/save' => array(
+        'controller' => 'Admin:Category@saveAction',
+    ),
+    // End Category routes
+    
+    '/%s/module/faq/category/delete/(:var)' => array(
+        'controller' => 'Admin:Category@deleteAction',
+    ),
     
     '/%s/module/faq' => array(
         'controller' => 'Admin:Faq@gridAction',
+    ),
+    
+    '/%s/module/faq/category/(:var)' => array(
+        'controller' => 'Admin:Faq@categoryAction',
+    ),
+
+    '/%s/module/faq/category/(:var)/page/(:var)' => array(
+        'controller' => 'Admin:Faq@categoryAction',
     ),
     
     '/%s/module/faq/page/(:var)' => array(
