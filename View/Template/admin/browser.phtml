@@ -69,7 +69,7 @@ defined('KRYSTAL') or die;
                         </td>
                         <td class="text-center">
                             <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this pair'); ?>" data-button="edit" href="<?php echo $this->url('Faq:Admin:Faq@editAction', $faq->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-                            <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this pair'); ?>" data-button="delete" data-id="<?php echo $this->url('Faq:Admin:Faq@deleteAction', $faq->getId()); ?>" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
+                            <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this pair'); ?>" data-button="delete" data-url="<?php echo $this->url('Faq:Admin:Faq@deleteAction', $faq->getId()); ?>" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
