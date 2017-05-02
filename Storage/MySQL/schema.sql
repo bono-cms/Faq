@@ -10,3 +10,14 @@ CREATE TABLE `bono_module_faq` (
 	`published` varchar(1) NOT NULL COMMENT 'Whether is published or not'
 	
 ) DEFAULT CHARSET = UTF8;
+
+
+DROP TABLE IF EXISTS `bono_module_faq_categories`;
+CREATE TABLE `bono_module_faq_categories` (
+	
+    `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`lang_id` INT NOT NULL COMMENT 'Language identification',
+	`name` TEXT NOT NULL COMMENT 'Category name',
+	`order` INT NOT NULL COMMENT 'Sort order'
+	
+) DEFAULT CHARSET = UTF8;
