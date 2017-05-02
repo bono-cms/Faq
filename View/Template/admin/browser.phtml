@@ -3,8 +3,6 @@
 use Krystal\Form\Element;
 defined('KRYSTAL') or die;
 
-#d($categoryId);
-
 ?>
 
 <div class="btn-toolbar">
@@ -62,7 +60,7 @@ defined('KRYSTAL') or die;
                             <input type="checkbox" name="toDelete[<?php echo $faq->getId(); ?>]" />
                         </td>
                         <td class="text-center text-muted"><?php echo $faq->getId(); ?></td>
-                        <td class="text-center"><?php echo $faq->getQuestion(); ?></td>
+                        <td><?php echo $faq->getQuestion(); ?></td>
                         <td class="text-center">
                             <?php echo Element::checkbox(sprintf('published[%s]', $faq->getId()), $faq->getPublished()); ?>
                         </td>
@@ -106,7 +104,7 @@ defined('KRYSTAL') or die;
                     <?php foreach ($categories as $category): ?>
                     <tr class="<?php echo $category->getId() == $categoryId ? 'info' : null; ?>">
                         <td class="text-center text-muted"><?php echo $category->getId(); ?></td>
-                        <td class="text-center">
+                        <td>
                             <a href="<?php echo $this->mapUrl('Faq:Admin:Faq@categoryAction', array($category->getId()), 0); ?>"><?php echo $category->getName(); ?></a>
                         </td>
                         <td class="text-center"><?php echo $category->getOrder(); ?></td>
