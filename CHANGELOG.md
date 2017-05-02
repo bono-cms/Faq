@@ -4,6 +4,8 @@ CHANGELOG
 1.2
 ---
 
+ * Minor bug fixes
+ * Added support for grouping by categories
  * Fixed issue with quote escaping
  * Added support for table prefix
  * Changed module icon
