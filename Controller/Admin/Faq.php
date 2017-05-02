@@ -28,6 +28,37 @@ final class Faq extends AbstractController
     }
 
     /**
+     * Creates a grid
+     * 
+     * @param integer $page Page number
+     * @param string $categoryId Category ID filter
+     * @return string
+     */
+    private function createGrid($page, $categoryId)
+    {
+        // Append a breadcrumb
+        $this->view->getBreadcrumbBag()
+                   ->addOne('FAQ');
+
+        // Configure pagination URL
+        if ($categoryId !== null) {
+            $url = $this->createUrl('Faq:Admin:Faq@categoryAction', array($categoryId), 1);
+        } else {
+            $url = $this->createUrl('Faq:Admin:Faq@gridAction', array(), 1);
+        }
+
+        $paginator = $this->getFaqManager()->getPaginator();
+        $paginator->setUrl($url);
+
+        return $this->view->render('browser', array(
+            'paginator' => $paginator,
+            'faqs' => $this->getFaqManager()->fetchAllByPage(false, $categoryId, $page, $this->getSharedPerPageCount()),
+            'categories' => $this->getModuleService('categoryManager')->fetchAll(false),
+            'categoryId' => $categoryId
+        ));
+    }
+
+    /**
      * Creates a form
      * 
      * @param \Krystal\Stdlib\VirtualEntity $faq
@@ -45,6 +76,7 @@ final class Faq extends AbstractController
                                        ->addOne($title);
 
         return $this->view->render('faq.form', array(
+            'categories' => $this->getModuleService('categoryManager')->fetchList(),
             'faq' => $faq
         ));
     }
@@ -61,7 +93,7 @@ final class Faq extends AbstractController
 
         return $this->createForm($faq, 'Add new FAQ');
     }
-    
+
     /**
      * Renders edit form
      * 
@@ -80,6 +112,18 @@ final class Faq extends AbstractController
     }
 
     /**
+     * Filter FAQ items by category
+     * 
+     * @param string $categoryId Category ID filter
+     * @param integer $page Page number
+     * @return string
+     */
+    public function categoryAction($categoryId, $page = 1)
+    {
+        return $this->createGrid($page, $categoryId);
+    }
+
+    /**
      * Renders the grid
      * 
      * @param string $page Current page
@@ -87,16 +131,7 @@ final class Faq extends AbstractController
      */ 
     public function gridAction($page = 1)
     {
-        $this->view->getBreadcrumbBag()
-                   ->addOne('FAQ');
-
-        $paginator = $this->getFaqManager()->getPaginator();
-        $paginator->setUrl($this->createUrl('Faq:Admin:Faq@gridAction', array(), 1));
-
-        return $this->view->render('browser', array(
-            'paginator' => $paginator,
-            'faqs' => $this->getFaqManager()->fetchAllByPage($page, $this->getSharedPerPageCount(), false)
-        ));
+        return $this->createGrid($page, null);
     }
 
     /**
