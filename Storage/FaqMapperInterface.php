@@ -40,21 +40,15 @@ interface FaqMapperInterface
     public function updateOrderById($id, $order);
 
     /**
-     * Fetches all records filtered by pagination
+     * Fetches all FAQs filtered by pagination
      * 
+     * @param boolean $published Whether to filter by published records
+     * @param string $categoryId Optional category id
      * @param integer $page Current page number
      * @param integer $itemsPerPage Per page count
-     * @param boolean $published Whether to fetch only published records
-     * @return array
+     * @return \Krystal\Db\Sql\Db
      */
-    public function fetchAllByPage($page, $itemsPerPage, $published);
-
-    /**
-     * Fetches all published records
-     * 
-     * @return array
-     */
-    public function fetchAllPublished();
+    public function fetchAllByPage($published, $categoryId = null, $page = null, $itemsPerPage = null);
 
     /**
      * Inserts a record

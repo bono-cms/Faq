@@ -26,30 +26,6 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     }
 
     /**
-     * Builds SELECT query
-     * 
-     * @param boolean $published Whether to filter by published records
-     * @return \Krystal\Db\Sql\Db
-     */
-    private function getSelectQuery($published)
-    {
-        // Build first fragment
-        $db = $this->db->select('*')
-                        ->from(static::getTableName())
-                        ->whereEquals('lang_id', $this->getLangId());
-
-        if ($published === true) {
-            $db->andWhereEquals('published', '1')
-               ->orderBy(new RawSqlFragment('`order`, CASE WHEN `order` = 0 THEN `id` END DESC'));
-        } else {
-            $db->orderBy('id')
-               ->desc();
-        }
-
-        return $db;
-    }
-
-    /**
      * Fetches question name by its associated id
      * 
      * @param string $id FAQ id
@@ -87,27 +63,37 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     /**
      * Fetches all FAQs filtered by pagination
      * 
+     * @param boolean $published Whether to filter by published records
+     * @param string $categoryId Optional category id
      * @param integer $page Current page number
      * @param integer $itemsPerPage Per page count
-     * @param boolean $published Whether to fetch only published ones
-     * @return array
+     * @return \Krystal\Db\Sql\Db
      */
-    public function fetchAllByPage($page, $itemsPerPage, $published)
+    public function fetchAllByPage($published, $categoryId = null, $page = null, $itemsPerPage = null)
     {
-        return $this->getSelectQuery($published)
-                    ->paginate($page, $itemsPerPage)
-                    ->queryAll();
-    }
+        // Build first fragment
+        $db = $this->db->select('*')
+                       ->from(self::getTableName())
+                       ->whereEquals('lang_id', $this->getLangId());
 
-    /**
-     * Fetches all published FAQs
-     * 
-     * @return array
-     */
-    public function fetchAllPublished()
-    {
-        return $this->getSelectQuery(true)
-                    ->queryAll();
+        if (!is_null($categoryId)) {
+            $db->andWhereEquals('category_id', $categoryId);
+        }
+
+        if ($published === true) {
+            $db->andWhereEquals('published', '1')
+               ->orderBy(new RawSqlFragment('`order`, CASE WHEN `order` = 0 THEN `id` END DESC'));
+        } else {
+            $db->orderBy('id')
+               ->desc();
+        }
+
+        // Optional pagination
+        if ($page !== null && $itemsPerPage !== null) {
+            $db->paginate($page, $itemsPerPage);
+        }
+
+        return $db->queryAll();
     }
 
     /**

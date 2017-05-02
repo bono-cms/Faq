@@ -32,21 +32,23 @@ interface FaqManagerInterface
     public function updateOrders(array $pair);
 
     /**
-     * Fetches all FAQs filtered by pagination
+     * Fetches all entities filtered by pagination
      * 
+     * @param boolean $published Whether to filter by published records
+     * @param string $categoryId Optional category id
      * @param integer $page Current page number
      * @param integer $itemsPerPage Per page count
-     * @param boolean $published Whether to fetch only published ones
      * @return array
      */
-    public function fetchAllByPage($page, $itemsPerPage, $published);
+    public function fetchAllByPage($published, $categoryId, $page, $itemsPerPage);
 
     /**
-     * Fetches all published faq bags
+     * Fetches all published entities
      * 
+     * @param string $categoryId Optional category id
      * @return array
      */
-    public function fetchAllPublished();
+    public function fetchAllPublished($categoryId = null);
 
     /**
      * Adds a FAQ

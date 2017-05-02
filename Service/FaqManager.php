@@ -65,6 +65,7 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
     {
         $entity = new VirtualEntity();
         $entity->setId($faq['id'], VirtualEntity::FILTER_INT)
+            ->setCategoryId($faq['category_id'], VirtualEntity::FILTER_INT)
             ->setQuestion($faq['question'], VirtualEntity::FILTER_HTML)
             ->setAnswer($faq['answer'], VirtualEntity::FILTER_SAFE_TAGS)
             ->setOrder($faq['order'], VirtualEntity::FILTER_INT)
@@ -115,19 +116,20 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      * @param boolean $published Whether to fetch only published ones
      * @return array
      */
-    public function fetchAllByPage($page, $itemsPerPage, $published)
+    public function fetchAllByPage($published, $categoryId, $page, $itemsPerPage)
     {
-        return $this->prepareResults($this->faqMapper->fetchAllByPage($page, $itemsPerPage, $published));
+        return $this->prepareResults($this->faqMapper->fetchAllByPage($published, $categoryId, $page, $itemsPerPage));
     }
 
     /**
      * Fetches all published entities
      * 
+     * @param string $categoryId Optional Category ID filter
      * @return array
      */
-    public function fetchAllPublished()
+    public function fetchAllPublished($categoryId = null)
     {
-        return $this->prepareResults($this->faqMapper->fetchAllPublished());
+        return $this->prepareResults($this->faqMapper->fetchAllByPage(true, $categoryId, null, null));
     }
 
     /**
