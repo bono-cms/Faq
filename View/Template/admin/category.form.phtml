@@ -1,0 +1,47 @@
+<?php defined('KRYSTAL') or die; ?>
+<?php
+
+use Krystal\Form\Element;
+
+?>
+
+<form data-group="category">
+    <div class="well">
+        <?php echo Element::hidden('category[id]', $category->getId()); ?>
+        
+        <div class="form-group">
+            <label class="col-lg-2 control-label"><?php $this->show('Name'); ?></label>
+            <div class="col-lg-10">
+                <div class="input-group">
+                    <?php echo Element::text('category[name]', $category->getName(), array('class' => 'form-control', 'placeholder' => $this->translate('Category name'))); ?>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
+            <div class="col-lg-10">
+                <div class="input-group">
+                    <?php echo Element::number('category[order]', $category->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Category sort order'))); ?>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <?php if ($category->getId()): ?>
+    
+    <button data-button="save" data-url="<?php echo $this->url('Faq:Admin:Category@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
+    <button data-button="save-create" data-back-url="<?php echo $this->url('Faq:Admin:Category@addAction'); ?>" data-url="<?php echo $this->url('Faq:Admin:Category@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
+    
+    <?php else: ?>
+    
+    <button data-button="add" data-back-url="<?php echo $this->url('Faq:Admin:Category@editAction', null); ?>" data-url="<?php echo $this->url('Faq:Admin:Category@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
+    <button data-button="add-create" data-url="<?php echo $this->url('Faq:Admin:Category@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
+    
+    <?php endif; ?>
+    
+    <button data-button="cancel" data-url="<?php echo $this->url('Faq:Admin:Faq@gridAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
+    
+</form>

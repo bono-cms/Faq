@@ -19,6 +19,17 @@ use Krystal\Form\Element;
             </div>
         </div>
         
+        <?php if (!empty($categories)): ?>
+        
+		<div class="form-group">
+            <label class="col-lg-2 control-label"><?php $this->show('Category'); ?></label>
+			<div class="col-lg-10">
+                <?php echo Element::select('faq[category_id]', $categories, $faq->getCategoryId(), array('class' => 'form-control')); ?>
+			</div>
+		</div>
+        
+        <?php endif; ?>
+        
         <div class="form-group">
             <label class="col-lg-2 control-label"><?php $this->show('Answer'); ?></label>
             <div class="col-lg-10">
