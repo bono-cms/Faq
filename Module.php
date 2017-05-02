@@ -13,6 +13,7 @@ namespace Faq;
 
 use Cms\AbstractCmsModule;
 use Faq\Service\FaqManager;
+use Faq\Service\CategoryManager;
 
 final class Module extends AbstractCmsModule
 {
@@ -22,7 +23,8 @@ final class Module extends AbstractCmsModule
     public function getServiceProviders()
     {
         return array(
-            'faqManager' => new FaqManager($this->getMapper('/Faq/Storage/MySQL/FaqMapper'), $this->getHistoryManager())
+            'faqManager' => new FaqManager($this->getMapper('/Faq/Storage/MySQL/FaqMapper'), $this->getHistoryManager()),
+            'categoryManager' => new CategoryManager($this->getMapper('/Faq/Storage/MySQL/CategoryMapper'))
         );
     }
 }
