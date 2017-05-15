@@ -111,8 +111,9 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
      */
     public function update(array $input)
     {
-        $data = $input['category'];
-        return $this->categoryMapper->update($data);
+        $input['order'] = (int) $input['order'];
+
+        return $this->categoryMapper->update($input);
     }
 
     /**
@@ -123,7 +124,8 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
      */
     public function add(array $input)
     {
-        $data = $input['category'];
-        return $this->categoryMapper->insert($data);
+        $input['order'] = (int) $input['order'];
+
+        return $this->categoryMapper->insert($input);
     }
 }
