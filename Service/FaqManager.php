@@ -140,6 +140,8 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function add(array $input)
     {
+        $input['order'] = (int) $input['order'];
+
         $this->track('FAQ "%s" has been added', $input['question']);
         return $this->faqMapper->insert($input);
     }
@@ -152,6 +154,8 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function update(array $input)
     {
+        $input['order'] = (int) $input['order'];
+
         $this->track('FAQ "%s" has been updated', $input['question']);
         return $this->faqMapper->update($input);
     }
