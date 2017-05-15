@@ -22,9 +22,13 @@ final class Module extends AbstractCmsModule
      */
     public function getServiceProviders()
     {
+        // Build mappers
+        $faqMapper = $this->getMapper('/Faq/Storage/MySQL/FaqMapper');
+        $categoryMapper = $this->getMapper('/Faq/Storage/MySQL/CategoryMapper');
+
         return array(
-            'faqManager' => new FaqManager($this->getMapper('/Faq/Storage/MySQL/FaqMapper'), $this->getHistoryManager()),
-            'categoryManager' => new CategoryManager($this->getMapper('/Faq/Storage/MySQL/CategoryMapper'))
+            'faqManager' => new FaqManager($faqMapper, $this->getHistoryManager()),
+            'categoryManager' => new CategoryManager($categoryMapper, $faqMapper)
         );
     }
 }

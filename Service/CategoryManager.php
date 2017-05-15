@@ -12,6 +12,7 @@
 namespace Faq\Service;
 
 use Faq\Storage\CategoryMapperInterface;
+use Faq\Storage\FaqMapperInterface;
 use Cms\Service\AbstractManager;
 use Krystal\Stdlib\VirtualEntity;
 use Krystal\Stdlib\ArrayUtils;
@@ -26,14 +27,23 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     private $categoryMapper;
 
     /**
+     * Any compliant FAQ mapper
+     * 
+     * @var \Faq\Storage\FaqMapperInterface
+     */
+    private $faqMapper;
+
+    /**
      * State initialization
      * 
      * @param \Faq\Storage\CategoryMapperInterface $categoryMapper
+     * @param \Faq\Storage\FaqMapperInterface $faqMapper
      * @return void
      */
-    public function __construct(CategoryMapperInterface $categoryMapper)
+    public function __construct(CategoryMapperInterface $categoryMapper, FaqMapperInterface $faqMapper)
     {
         $this->categoryMapper = $categoryMapper;
+        $this->faqMapper = $faqMapper;
     }
 
     /**
@@ -100,7 +110,7 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
      */
     public function deleteById($id)
     {
-        return $this->categoryMapper->deleteById($id);
+        return $this->categoryMapper->deleteById($id) && $this->faqMapper->deleteAllByCategoryId($id);
     }
 
     /**
@@ -112,7 +122,6 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     public function update(array $input)
     {
         $input['order'] = (int) $input['order'];
-
         return $this->categoryMapper->update($input);
     }
 
@@ -125,7 +134,6 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     public function add(array $input)
     {
         $input['order'] = (int) $input['order'];
-
         return $this->categoryMapper->insert($input);
     }
 }
