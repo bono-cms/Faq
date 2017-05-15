@@ -67,6 +67,14 @@ interface FaqMapperInterface
     public function update(array $data);
 
     /**
+     * Delete all items by associated category ID
+     * 
+     * @param string $categoryId
+     * @return boolean
+     */
+    public function deleteAllByCategoryId($categoryId);
+
+    /**
      * Deletes a FAQ by its associated id
      * 
      * @param string $id

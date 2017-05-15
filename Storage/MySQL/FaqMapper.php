@@ -119,6 +119,17 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     }
 
     /**
+     * Delete all items by associated category ID
+     * 
+     * @param string $categoryId
+     * @return boolean
+     */
+    public function deleteAllByCategoryId($categoryId)
+    {
+        return $this->deleteByColumn('category_id', $categoryId);
+    }
+
+    /**
      * Deletes a FAQ by its associated id
      * 
      * @param string $id FAQ's id
