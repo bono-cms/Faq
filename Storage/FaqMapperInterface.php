@@ -83,10 +83,11 @@ interface FaqMapperInterface
     public function deleteById($id);
 
     /**
-     * Fetches a record by its associated id
+     * Fetches FAQ's data by its associated id
      * 
-     * @param string $id
+     * @param string $id FAQ's id
+     * @param boolean $withTranslations Whether to fetch translations or not
      * @return array
      */
-    public function fetchById($id);
+    public function fetchById($id, $withTranslations);
 }

@@ -26,6 +26,32 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public static function getTranslationTable()
+    {
+        return FaqTranslationMapper::getTableName();
+    }
+
+    /**
+     * Returns shared columns to be selected
+     * 
+     * @return array
+     */
+    private function getColumns()
+    {
+        return array(
+            self::getFullColumnName('id'),
+            self::getFullColumnName('category_id'),
+            self::getFullColumnName('published'),
+            self::getFullColumnName('order'),
+            FaqTranslationMapper::getFullColumnName('lang_id'),
+            FaqTranslationMapper::getFullColumnName('question'),
+            FaqTranslationMapper::getFullColumnName('answer')
+        );
+    }
+
+    /**
      * Fetches question name by its associated id
      * 
      * @param string $id FAQ id
@@ -71,20 +97,18 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
      */
     public function fetchAllByPage($published, $categoryId = null, $page = null, $itemsPerPage = null)
     {
-        // Build first fragment
-        $db = $this->db->select('*')
-                       ->from(self::getTableName())
-                       ->whereEquals('lang_id', $this->getLangId());
+        $db = $this->createEntitySelect($this->getColumns())
+                   ->whereEquals(FaqTranslationMapper::getFullColumnName('lang_id'), $this->getLangId());
 
         if (!is_null($categoryId)) {
-            $db->andWhereEquals('category_id', $categoryId);
+            $db->andWhereEquals(self::getFullColumnName('category_id'), $categoryId);
         }
 
         if ($published === true) {
-            $db->andWhereEquals('published', '1')
-               ->orderBy(new RawSqlFragment('`order`, CASE WHEN `order` = 0 THEN `id` END DESC'));
+            $db->andWhereEquals(self::getFullColumnName('published'), '1')
+               ->orderBy(new RawSqlFragment(sprintf('`order`, CASE WHEN `order` = 0 THEN %s END DESC', self::getFullColumnName('id'))));
         } else {
-            $db->orderBy('id')
+            $db->orderBy(self::getFullColumnName('id'))
                ->desc();
         }
 
@@ -144,10 +168,11 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
      * Fetches FAQ's data by its associated id
      * 
      * @param string $id FAQ's id
+     * @param boolean $withTranslations Whether to fetch translations or not
      * @return array
      */
-    public function fetchById($id)
+    public function fetchById($id, $withTranslations)
     {
-        return $this->findByPk($id);
+        return $this->findEntity($this->getColumns(), $id, $withTranslations);
     }
 }

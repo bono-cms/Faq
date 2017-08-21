@@ -84,9 +84,10 @@ interface FaqManagerInterface
      * Fetches a faq bag by its associated id
      * 
      * @param string $id Faq id
-     * @return boolean|\Krystal\Stdlib\VirtualBag
+     * @param boolean $withTranslations Whether to fetch translations or not
+     * @return boolean|\Krystal\Stdlib\VirtualBag|boolean
      */
-    public function fetchById($id);
+    public function fetchById($id, $withTranslations);
 
     /**
      * Deletes a faq by its associated id

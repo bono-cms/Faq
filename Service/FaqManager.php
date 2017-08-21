@@ -66,6 +66,7 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
         $entity = new VirtualEntity();
         $entity->setId($faq['id'], VirtualEntity::FILTER_INT)
             ->setCategoryId($faq['category_id'], VirtualEntity::FILTER_INT)
+            ->setLangId($faq['lang_id'], VirtualEntity::FILTER_INT)
             ->setQuestion($faq['question'], VirtualEntity::FILTER_HTML)
             ->setAnswer($faq['answer'], VirtualEntity::FILTER_SAFE_TAGS)
             ->setOrder($faq['order'], VirtualEntity::FILTER_INT)
@@ -133,6 +134,19 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
     }
 
     /**
+     * Saves a FAQ
+     * 
+     * @param array $input
+     * @return boolean
+     */
+    private function save(array $input)
+    {
+        // Safe type-casting
+        $input['faq']['order'] = (int) $input['faq']['order'];
+        return $this->faqMapper->saveEntity($input['faq'], $input['translation']);
+    }
+
+    /**
      * Adds a FAQ
      * 
      * @param array $input Raw form data
@@ -140,10 +154,8 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function add(array $input)
     {
-        $input['order'] = (int) $input['order'];
-
-        $this->track('FAQ "%s" has been added', $input['question']);
-        return $this->faqMapper->insert($input);
+        //$this->track('FAQ "%s" has been added', $input['question']);
+        return $this->save($input);
     }
 
     /**
@@ -154,10 +166,8 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function update(array $input)
     {
-        $input['order'] = (int) $input['order'];
-
-        $this->track('FAQ "%s" has been updated', $input['question']);
-        return $this->faqMapper->update($input);
+        //$this->track('FAQ "%s" has been updated', $input['question']);
+        return $this->save($input);
     }
 
     /**
@@ -184,11 +194,16 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      * Fetches a faq bag by its associated id
      * 
      * @param string $id Faq id
-     * @return boolean|\Krystal\Stdlib\VirtualBag
+     * @param boolean $withTranslations Whether to fetch translations or not
+     * @return boolean|\Krystal\Stdlib\VirtualBag|boolean
      */
-    public function fetchById($id)
+    public function fetchById($id, $withTranslations)
     {
-        return $this->prepareResult($this->faqMapper->fetchById($id));
+        if ($withTranslations == true) {
+            return $this->prepareResults($this->faqMapper->fetchById($id, true));
+        } else {
+            return $this->prepareResult($this->faqMapper->fetchById($id, false));
+        }
     }
 
     /**
@@ -199,10 +214,10 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function deleteById($id)
     {
-        $name = Filter::escape($this->faqMapper->fetchQuestionById($id));
+        //$name = Filter::escape($this->faqMapper->fetchQuestionById($id));
 
-        if ($this->faqMapper->deleteById($id)) {
-            $this->track('FAQ "%s" has been removed', $name);
+        if ($this->faqMapper->deleteEntity($id)) {
+            //$this->track('FAQ "%s" has been removed', $name);
             return true;
         } else {
             return false;
@@ -217,11 +232,7 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function deleteByIds(array $ids)
     {
-        foreach ($ids as $id) {
-            if (!$this->faqMapper->deleteById($id)) {
-                return false;
-            }
-        }
+        $this->faqMapper->deleteEntity($ids);
 
         $this->track('Batch removal of %s faq', count($ids));
         return true;
