@@ -121,28 +121,6 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     }
 
     /**
-     * Adds new FAQ
-     * 
-     * @param array $input Raw input data
-     * @return boolean
-     */
-    public function insert(array $input)
-    {
-        return $this->persist($this->getWithLang($input));
-    }
-
-    /**
-     * Updates a FAQ
-     * 
-     * @param array $input Raw input data
-     * @return boolean
-     */
-    public function update(array $input)
-    {
-        return $this->persist($input);
-    }
-
-    /**
      * Delete all items by associated category ID
      * 
      * @param string $categoryId
@@ -151,17 +129,6 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     public function deleteAllByCategoryId($categoryId)
     {
         return $this->deleteByColumn('category_id', $categoryId);
-    }
-
-    /**
-     * Deletes a FAQ by its associated id
-     * 
-     * @param string $id FAQ's id
-     * @return boolean
-     */
-    public function deleteById($id)
-    {
-        return $this->deleteByPk($id);
     }
 
     /**

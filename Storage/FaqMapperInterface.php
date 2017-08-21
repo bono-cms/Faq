@@ -51,36 +51,12 @@ interface FaqMapperInterface
     public function fetchAllByPage($published, $categoryId = null, $page = null, $itemsPerPage = null);
 
     /**
-     * Inserts a record
-     * 
-     * @param array $data
-     * @return boolean
-     */
-    public function insert(array $data);
-
-    /**
-     * Updates a record
-     * 
-     * @param array $data
-     * @return boolean
-     */
-    public function update(array $data);
-
-    /**
      * Delete all items by associated category ID
      * 
      * @param string $categoryId
      * @return boolean
      */
     public function deleteAllByCategoryId($categoryId);
-
-    /**
-     * Deletes a FAQ by its associated id
-     * 
-     * @param string $id
-     * @return boolean
-     */
-    public function deleteById($id);
 
     /**
      * Fetches FAQ's data by its associated id
