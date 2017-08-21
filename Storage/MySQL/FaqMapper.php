@@ -63,27 +63,14 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     }
 
     /**
-     * Update published state by its associated FAQ id
+     * Update settings
      * 
-     * @param integer $id
-     * @param string $published Either 0 or 1
+     * @param array $settings
      * @return boolean
      */
-    public function updatePublishedById($id, $published)
+    public function updateSettings(array $settings)
     {
-        return $this->updateColumnByPk($id, 'published', $published);
-    }
-
-    /**
-     * Update an order by record's associated id
-     * 
-     * @param string $id
-     * @param integer $order New sort order
-     * @return boolean
-     */
-    public function updateOrderById($id, $order)
-    {
-        return $this->updateColumnByPk($id, 'order', $order);
+        return $this->updateColumns($settings, array('order', 'published'));
     }
 
     /**

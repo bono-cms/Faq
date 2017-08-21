@@ -16,20 +16,12 @@ use Krystal\Stdlib\VirtualEntity;
 interface FaqManagerInterface
 {
     /**
-     * Updates published states by their associated ids
+     * Update settings
      * 
-     * @param array $pair
+     * @param array $settings
      * @return boolean
      */
-    public function updatePublished(array $pair);
-
-    /**
-     * Updates orders by their associated ids
-     * 
-     * @param array $pair
-     * @return boolean
-     */
-    public function updateOrders(array $pair);
+    public function updateSettings(array $settings);
 
     /**
      * Fetches all entities filtered by pagination

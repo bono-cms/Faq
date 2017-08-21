@@ -22,22 +22,12 @@ interface FaqMapperInterface
     public function fetchQuestionById($id);
 
     /**
-     * Update published state by its associated FAQ's id
+     * Update settings
      * 
-     * @param integer $id
-     * @param string $published Either 0 or 1
+     * @param array $settings
      * @return boolean
      */
-    public function updatePublishedById($id, $published);
-
-    /**
-     * Update an order by its associated FAQ id
-     * 
-     * @param string $id
-     * @param integer $order New sort order
-     * @return boolean
-     */
-    public function updateOrderById($id, $order);
+    public function updateSettings(array $settings);
 
     /**
      * Fetches all FAQs filtered by pagination
