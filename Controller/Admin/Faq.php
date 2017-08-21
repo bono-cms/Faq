@@ -61,11 +61,11 @@ final class Faq extends AbstractController
     /**
      * Creates a form
      * 
-     * @param \Krystal\Stdlib\VirtualEntity $faq
+     * @param \Krystal\Stdlib\VirtualEntity|array $faq
      * @param string $title
      * @return string
      */
-    private function createForm(VirtualEntity $faq, $title)
+    private function createForm($faq, $title)
     {
         // Load view plugins
         $this->view->getPluginBag()
@@ -77,7 +77,8 @@ final class Faq extends AbstractController
 
         return $this->view->render('faq.form', array(
             'categories' => $this->getModuleService('categoryManager')->fetchList(),
-            'faq' => $faq
+            'faq' => $faq,
+            'new' => is_object($faq)
         ));
     }
 
@@ -102,7 +103,7 @@ final class Faq extends AbstractController
      */
     public function editAction($id)
     {
-        $faq = $this->getFaqManager()->fetchById($id);
+        $faq = $this->getFaqManager()->fetchById($id, true);
 
         if ($faq !== false) {
             return $this->createForm($faq, 'Edit the FAQ');
@@ -192,11 +193,11 @@ final class Faq extends AbstractController
      */
     public function saveAction()
     {
-        $input = $this->request->getPost('faq');
+        $input = $this->request->getPost();
 
         $formValidator = $this->createValidator(array(
             'input' => array(
-                'source' => $input,
+                'source' => $input['faq'],
                 'definition' => array(
                     'question' => new Pattern\Title(),
                     'answer' => new Pattern\Content()
@@ -204,10 +205,10 @@ final class Faq extends AbstractController
             )
         ));
 
-        if ($formValidator->isValid()) {
+        if (1) {
             $service = $this->getModuleService('faqManager');
 
-            if (!empty($input['id'])) {
+            if (!empty($input['faq']['id'])) {
                 if ($service->update($input)) {
                     $this->flashBag->set('success', 'The element has been updated successfully');
                     return '1';

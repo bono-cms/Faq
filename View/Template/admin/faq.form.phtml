@@ -1,75 +1,97 @@
-<?php defined('KRYSTAL') or die; ?>
 <?php
 
 use Krystal\Form\Element;
+use Cms\Service\LanguageManager;
+
+defined('KRYSTAL') or die;
 
 ?>
 
 <form data-group="faq">
-    <div class="well">
-        <?php echo Element::hidden('faq[id]', $faq->getId()); ?>
-        
-        <div class="form-group">
-            <label class="col-lg-2 control-label"><?php $this->show('Question'); ?></label>
-            <div class="col-lg-10">
-                <div class="input-group">
-                    <?php echo Element::text('faq[question]', $faq->getQuestion(), array('class' => 'form-control', 'placeholder' => $this->translate('Question title'))); ?>
-                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#page" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-file"></i> <?php $this->show('FAQ'); ?></a></li>
+        <li role="presentation"><a href="#configuration" role="tab" data-toggle="tab"><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Configuration'); ?></a></li>
+	</ul>
+
+    <div class="tab-content">
+		<div class="tab-pane fade in active" id="page" role="tabpanel">
+            <div class="well">
+                <?php $this->loadPartial('language-tabs'); ?>
+
+                <div class="tab-content">
+
+                    <?php foreach ($languages as $index => $language): ?>
+                    <div class="tab-pane fade in <?php echo $index == 0 ? 'active' : null; ?>" id="<?php printf('language-%s', $language->getId()); ?>" role="tabpanel">
+                        <?php $entity = LanguageManager::findByLangId($language->getId(), $faq); ?>
+
+                        <?php echo Element::hidden(sprintf('translation[%s][id]', $language->getId()), $entity->getId()); ?>
+                        <?php echo Element::hidden(sprintf('translation[%s][lang_id]', $language->getId()), $language->getId()); ?>
+
+                        <?php $this->loadPartial('language-name', array('language' => $language)); ?>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Question'); ?></label>
+                            <div class="col-lg-10">
+                                <div class="input-group">
+                                    <?php echo Element::text(sprintf('translation[%s][question]', $language->getId()), $entity->getQuestion(), array('class' => 'form-control', 'placeholder' => $this->translate('Question title'))); ?>
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label"><?php $this->show('Answer'); ?></label>
+                            <div class="col-lg-10">
+                                <?php echo Element::textarea(sprintf('translation[%s][answer]', $language->getId()), $entity->getAnswer(), array('data-wysiwyg' => 'true')); ?>
+                            </div>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
-        
-        <?php if (!empty($categories)): ?>
-        
-		<div class="form-group">
-            <label class="col-lg-2 control-label"><?php $this->show('Category'); ?></label>
-			<div class="col-lg-10">
-                <?php echo Element::select('faq[category_id]', $categories, $faq->getCategoryId(), array('class' => 'form-control')); ?>
-			</div>
-		</div>
-        
-        <?php endif; ?>
-        
-        <div class="form-group">
-            <label class="col-lg-2 control-label"><?php $this->show('Answer'); ?></label>
-            <div class="col-lg-10">
-                <?php echo Element::textarea('faq[answer]', $faq->getAnswer(), array('data-wysiwyg' => 'true')); ?>
-            </div>
-        </div>
-        
-        <div class="options">
-            <div class="form-group">
-                <label class="col-lg-2 control-label"><?php $this->show('Published'); ?></label>
-                <div class="col-lg-10">
-                    <?php echo Element::checkbox('faq[published]', $faq->getPublished(), array('class' => 'form-control')); ?>
+
+        <div role="tabpanel" class="tab-pane" id="configuration">
+            <?php echo Element::hidden('faq[id]', $entity->getId()); ?>
+
+            <div class="well">
+                <?php if (!empty($categories)): ?>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Category'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::select('faq[category_id]', $categories, $entity->getCategoryId(), array('class' => 'form-control')); ?>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
-                <div class="col-lg-10">
-                    <div class="input-group">
-                        <?php echo Element::number('faq[order]', $faq->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Order of this question'))); ?>
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                <?php endif; ?>
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Order'); ?></label>
+                    <div class="col-lg-10">
+                        <div class="input-group">
+                            <?php echo Element::number('faq[order]', $entity->getOrder(), array('class' => 'form-control', 'placeholder' => $this->translate('Order of this question'))); ?>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-pencil"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-lg-2 control-label"><?php $this->show('Published'); ?></label>
+                    <div class="col-lg-10">
+                        <?php echo Element::checkbox('faq[published]', $entity->getPublished(), array('class' => 'form-control')); ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <?php if ($faq->getId()): ?>
-    
+
+    <?php if (!$new): ?>
     <button data-button="save" data-url="<?php echo $this->url('Faq:Admin:Faq@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save'); ?></button>
     <button data-button="save-create" data-back-url="<?php echo $this->url('Faq:Admin:Faq@addAction'); ?>" data-url="<?php echo $this->url('Faq:Admin:Faq@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Save & Create new'); ?></button>
-    
     <?php else: ?>
-    
+
     <button data-button="add" data-back-url="<?php echo $this->url('Faq:Admin:Faq@editAction', null); ?>" data-url="<?php echo $this->url('Faq:Admin:Faq@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add'); ?></button>
     <button data-button="add-create" data-url="<?php echo $this->url('Faq:Admin:Faq@saveAction'); ?>" class="btn btn-primary"><i class="glyphicon glyphicon-floppy-save"></i> <?php $this->show('Add & Create new'); ?></button>
-    
     <?php endif; ?>
     
-    <button data-button="options" class="btn btn-primary"><i class="glyphicon glyphicon-open"></i> <?php $this->show('More options'); ?></button>
     <button data-button="cancel" data-url="<?php echo $this->url('Faq:Admin:Faq@gridAction'); ?>" class="btn btn-default"><i class="glyphicon glyphicon-floppy-remove"></i> <?php $this->show('Cancel'); ?></button>
-    
 </form>
