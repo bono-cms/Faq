@@ -142,14 +142,9 @@ final class Faq extends AbstractController
      */
     public function tweakAction()
     {
-        if ($this->request->hasPost('published', 'order') && $this->request->isAjax()) {
-            $published = $this->request->getPost('published');
-            $orders = $this->request->getPost('order');
-
+        if ($this->request->hasPost('published', 'order')) {
             $faqManager = $this->getFaqManager();
-
-            $faqManager->updatePublished($published);
-            $faqManager->updateOrders($orders);
+            $faqManager->updateSettings($this->request->getPost());
 
             $this->flashBag->set('success', 'Settings have been save successfully');
             return '1';
