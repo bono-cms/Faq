@@ -77,8 +77,7 @@ final class Faq extends AbstractController
 
         return $this->view->render('faq.form', array(
             'categories' => $this->getModuleService('categoryManager')->fetchList(),
-            'faq' => $faq,
-            'new' => is_object($faq)
+            'faq' => $faq
         ));
     }
 
