@@ -37,7 +37,7 @@ final class Faq extends AbstractController
             return $this->view->render('faq', array(
                 'faqs' => $faqManager->fetchAllPublished(),
                 'page' => $page,
-                'languages' => $pageManager->getSwitchUrls($id)
+                'languages' => $pageManager->getSwitchUrls($id, 'Faq:Faq@indexAction')
             ));
 
         } else {
