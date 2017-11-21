@@ -23,7 +23,8 @@ final class Faq extends AbstractController
      */
     public function indexAction($id)
     {
-        $page = $this->getService('Pages', 'pageManager')->fetchById($id);
+        $pageManager = $this->getService('Pages', 'pageManager');
+        $page = $pageManager->fetchById($id);
 
         if ($page !== false) {
             $this->loadSitePlugins();
@@ -35,7 +36,8 @@ final class Faq extends AbstractController
 
             return $this->view->render('faq', array(
                 'faqs' => $faqManager->fetchAllPublished(),
-                'page' => $page
+                'page' => $page,
+                'languages' => $pageManager->getSwitchUrls($id)
             ));
 
         } else {
