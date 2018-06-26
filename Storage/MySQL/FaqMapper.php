@@ -41,13 +41,13 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     private function getColumns()
     {
         return array(
-            self::getFullColumnName('id'),
-            self::getFullColumnName('category_id'),
-            self::getFullColumnName('published'),
-            self::getFullColumnName('order'),
-            FaqTranslationMapper::getFullColumnName('lang_id'),
-            FaqTranslationMapper::getFullColumnName('question'),
-            FaqTranslationMapper::getFullColumnName('answer')
+            self::column('id'),
+            self::column('category_id'),
+            self::column('published'),
+            self::column('order'),
+            FaqTranslationMapper::column('lang_id'),
+            FaqTranslationMapper::column('question'),
+            FaqTranslationMapper::column('answer')
         );
     }
 
@@ -85,17 +85,17 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
     public function fetchAllByPage($published, $categoryId = null, $page = null, $itemsPerPage = null)
     {
         $db = $this->createEntitySelect($this->getColumns())
-                   ->whereEquals(FaqTranslationMapper::getFullColumnName('lang_id'), $this->getLangId());
+                   ->whereEquals(FaqTranslationMapper::column('lang_id'), $this->getLangId());
 
         if (!is_null($categoryId)) {
-            $db->andWhereEquals(self::getFullColumnName('category_id'), $categoryId);
+            $db->andWhereEquals(self::column('category_id'), $categoryId);
         }
 
         if ($published === true) {
-            $db->andWhereEquals(self::getFullColumnName('published'), '1')
-               ->orderBy(new RawSqlFragment(sprintf('`order`, CASE WHEN `order` = 0 THEN %s END DESC', self::getFullColumnName('id'))));
+            $db->andWhereEquals(self::column('published'), '1')
+               ->orderBy(new RawSqlFragment(sprintf('`order`, CASE WHEN `order` = 0 THEN %s END DESC', self::column('id'))));
         } else {
-            $db->orderBy(self::getFullColumnName('id'))
+            $db->orderBy(self::column('id'))
                ->desc();
         }
 
