@@ -80,7 +80,7 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
      * @param string $categoryId Optional category id
      * @param integer $page Current page number
      * @param integer $itemsPerPage Per page count
-     * @return \Krystal\Db\Sql\Db
+     * @return array
      */
     public function fetchAllByPage($published, $categoryId = null, $page = null, $itemsPerPage = null)
     {
