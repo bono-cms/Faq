@@ -26,6 +26,29 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public static function getTranslationTable()
+    {
+        return CategoryTranslationMapper::getTableName();
+    }
+
+    /**
+     * Returns shared columns to be selected
+     * 
+     * @return array
+     */
+    private function getColumns()
+    {
+        return array(
+            self::column('id'),
+            self::column('order'),
+            CategoryTranslationMapper::column('lang_id'),
+            CategoryTranslationMapper::column('name')
+        );
+    }
+
+    /**
      * Adds a new category
      * 
      * @param array $data
@@ -62,11 +85,12 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
      * Find category data by its associated id
      * 
      * @param string $id
+     * @param boolean $withTranslations Whether to fetch translations or not
      * @return array
      */
-    public function fetchById($id)
+    public function fetchById($id, $withTranslations)
     {
-        return $this->findByPk($id);
+        return $this->findEntity($this->getColumns(), $id, $withTranslations);
     }
 
     /**
@@ -77,9 +101,8 @@ final class CategoryMapper extends AbstractMapper implements CategoryMapperInter
      */
     public function fetchAll($sort)
     {
-        $db = $this->db->select('*')
-                       ->from(self::getTableName())
-                       ->whereEquals('lang_id', $this->getLangId());
+        $db = $this->createEntitySelect($this->getColumns())
+                   ->whereEquals(CategoryTranslationMapper::column('lang_id'), $this->getLangId());
 
         if ($sort === true) {
             $db->orderBy(new RawSqlFragment('`order`, CASE WHEN `order` = 0 THEN `id` END DESC'));

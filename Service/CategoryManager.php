@@ -53,6 +53,7 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     {
         $entity = new VirtualEntity();
         $entity->setId($row['id'], VirtualEntity::FILTER_INT)
+               ->setLangId($row['lang_id'], VirtualEntity::FILTER_INT)
                ->setName($row['name'], VirtualEntity::FILTER_TAGS)
                ->setOrder($row['order'], VirtualEntity::FILTER_INT);
 
@@ -84,12 +85,17 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     /**
      * Finds category entity by its id
      * 
-     * @param string $id Category id
+     * @param string $id
+     * @param boolean $withTranslations Whether to fetch translations or not
      * @return \Krystal\Stdlib\VirtualEntity|boolean
      */
-    public function fetchById($id)
+    public function fetchById($id, $withTranslations)
     {
-        return $this->prepareResult($this->categoryMapper->fetchById($id));
+        if ($withTranslations === true) {
+            return $this->prepareResults($this->categoryMapper->fetchById($id, $withTranslations));
+        } else {
+            return $this->prepareResult($this->categoryMapper->fetchById($id, $withTranslations));
+        }
     }
 
     /**
@@ -114,26 +120,13 @@ final class CategoryManager extends AbstractManager implements CategoryManagerIn
     }
 
     /**
-     * Updates a category
+     * Saves a category
      * 
      * @param array $input
      * @return boolean
      */
-    public function update(array $input)
+    public function save(array $input)
     {
-        $input['order'] = (int) $input['order'];
-        return $this->categoryMapper->update($input);
-    }
-
-    /**
-     * Adds a category
-     * 
-     * @param array $input
-     * @return boolean
-     */
-    public function add(array $input)
-    {
-        $input['order'] = (int) $input['order'];
-        return $this->categoryMapper->insert($input);
+        return $this->categoryMapper->saveEntity($input['category'], $input['translation']);
     }
 }

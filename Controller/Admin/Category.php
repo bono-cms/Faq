@@ -20,11 +20,11 @@ final class Category extends AbstractController
     /**
      * Creates a form
      * 
-     * @param \Krystal\Stdlib\VirtualEntity $category
+     * @param \Krystal\Stdlib\VirtualEntity|array $category
      * @param string $title
      * @return string
      */
-    private function createForm(VirtualEntity $category, $title)
+    private function createForm($category, $title)
     {
         // Append breadcrumbs
         $this->view->getBreadcrumbBag()->addOne('FAQ', 'Faq:Admin:Faq@gridAction')
@@ -53,7 +53,7 @@ final class Category extends AbstractController
      */
     public function editAction($id)
     {
-        $category = $this->getModuleService('categoryManager')->fetchById($id);
+        $category = $this->getModuleService('categoryManager')->fetchById($id, true);
 
         if ($category !== false) {
             return $this->createForm($category, 'Edit the category');
@@ -95,17 +95,17 @@ final class Category extends AbstractController
             )
         ));
 
-        if ($formValidator->isValid()) {
+        if (1) {
             $service = $this->getModuleService('categoryManager');
 
             if (!empty($input['id'])) {
-                if ($service->update($input)) {
+                if ($service->save($this->request->getPost())) {
                     $this->flashBag->set('success', 'The element has been updated successfully');
                     return '1';
                 }
 
             } else {
-                if ($service->add($input)) {
+                if ($service->save($this->request->getPost())) {
                     $this->flashBag->set('success', 'The element has been created successfully');
                     return $service->getLastId();
                 }

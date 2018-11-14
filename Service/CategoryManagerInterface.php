@@ -19,7 +19,7 @@ interface CategoryManagerInterface
      * @return array
      */
     public function fetchList();
-    
+
     /**
      * Fetch all category entities
      * 
@@ -31,10 +31,11 @@ interface CategoryManagerInterface
     /**
      * Finds category entity by its id
      * 
-     * @param string $id Category id
+     * @param string $id
+     * @param boolean $withTranslations Whether to fetch translations or not
      * @return \Krystal\Stdlib\VirtualEntity|boolean
      */
-    public function fetchById($id);
+    public function fetchById($id, $withTranslations);
 
     /**
      * Returns category last id
@@ -52,18 +53,10 @@ interface CategoryManagerInterface
     public function deleteById($id);
 
     /**
-     * Updates a category
+     * Saves a category
      * 
      * @param array $input
      * @return boolean
      */
-    public function update(array $input);
-
-    /**
-     * Adds a category
-     * 
-     * @param array $input
-     * @return boolean
-     */
-    public function add(array $input);
+    public function save(array $input);
 }
