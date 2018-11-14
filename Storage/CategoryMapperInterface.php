@@ -14,22 +14,6 @@ namespace Faq\Storage;
 interface CategoryMapperInterface
 {
     /**
-     * Adds a new category
-     * 
-     * @param array $data
-     * @return boolean
-     */
-    public function insert(array $data);
-
-    /**
-     * Updates a category
-     * 
-     * @param array $data
-     * @return boolean
-     */
-    public function update(array $data);
-
-    /**
      * Deletes a category by its associated id
      * 
      * @param string $id
