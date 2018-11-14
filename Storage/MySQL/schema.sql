@@ -22,10 +22,16 @@ CREATE TABLE `bono_module_faq_translations` (
 
 DROP TABLE IF EXISTS `bono_module_faq_categories`;
 CREATE TABLE `bono_module_faq_categories` (
-	
     `id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	`lang_id` INT NOT NULL COMMENT 'Language identification',
-	`name` TEXT NOT NULL COMMENT 'Category name',
 	`order` INT NOT NULL COMMENT 'Sort order'
-	
+) DEFAULT CHARSET = UTF8;
+
+DROP TABLE IF EXISTS `bono_module_faq_categories_translations`;
+CREATE TABLE `bono_module_faq_categories_translations` (
+    `id` INT NOT NULL,
+    `lang_id` INT NOT NULL COMMENT 'Language identification',
+    `name` TEXT NOT NULL COMMENT 'Category name',
+
+    FOREIGN KEY (id) REFERENCES bono_module_faq_categories(id) ON DELETE CASCADE
+
 ) DEFAULT CHARSET = UTF8;
