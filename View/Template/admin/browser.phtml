@@ -1,6 +1,9 @@
 <?php
 
 use Krystal\Form\Element;
+use Krystal\Grid\Grid;
+use Cms\View\Icon;
+
 defined('KRYSTAL') or die;
 
 ?>
@@ -35,47 +38,53 @@ defined('KRYSTAL') or die;
     <div class="row">
         <div class="col-lg-8">
             <?php $this->loadPartial('items-per-page', array('caption' => 'FAQ')); ?>
-            
-            <table class="table table-hover table-bordered table-striped table-condensed">
-                <thead>
-                    <tr>
-                        <th class="text-center">
-                            <?php if (!empty($faqs)): ?>
-                            <input type="checkbox" />
-                            <?php endif; ?>
-                        </th>
-                        <th class="text-center"><?php $this->show('#'); ?></th>
-                        <th class="text-center"><?php $this->show('Question'); ?></th>
-                        <th class="text-center"><?php $this->show('Published'); ?></th>
-                        <th class="text-center"><?php $this->show('Order'); ?></th>
-                        <th class="text-center"><?php $this->show('Actions'); ?></th>
-                    </tr>
-                </thead>
-                
-                <?php if (!empty($faqs)): ?>
-                <tbody>
-                    <?php foreach ($faqs as $faq): ?>
-                    <tr>
-                        <td class="text-center">
-                            <input type="checkbox" name="toDelete[<?php echo $faq->getId(); ?>]" />
-                        </td>
-                        <td class="text-center text-muted"><?php echo $faq->getId(); ?></td>
-                        <td><?php echo $faq->getQuestion(); ?></td>
-                        <td class="text-center">
-                            <?php echo Element::checkbox(sprintf('published[%s]', $faq->getId()), $faq->getPublished()); ?>
-                        </td>
-                        <td class="text-center col-md-1">
-                            <?php echo Element::number(sprintf('order[%s]', $faq->getId()), $faq->getOrder(), array('class' => 'form-control', 'min' => '0')); ?>
-                        </td>
-                        <td class="text-center">
-                            <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this pair'); ?>" data-button="edit" href="<?php echo $this->url('Faq:Admin:Faq@editAction', $faq->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-                            <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this pair'); ?>" data-button="delete" data-url="<?php echo $this->url('Faq:Admin:Faq@deleteAction', $faq->getId()); ?>" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-                <?php endif; ?>
-            </table>
+
+            <?= Grid::render($faqs, array(
+                'batch' => true,
+                'pk' => 'id',
+                'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
+                'columns' => array(
+                    array(
+                        'column' => 'id',
+                        'label' => '#'
+                    ),
+
+                    array(
+                        'column' => 'question',
+                    ),
+
+                    array(
+                        'column' => 'published',
+                        'value' => function($faq){
+                            return Element::checkbox(sprintf('published[%s]', $faq->getId()), $faq->getPublished());
+                        }
+                    ),
+
+                    array(
+                        'column' => 'order',
+                        'value' => function($faq){
+                            return Element::number(sprintf('order[%s]', $faq->getId()), $faq->getOrder(), array('class' => 'form-control', 'min' => '0'));
+                        }
+                    )
+                ),
+
+                'actions' => array(
+                    'edit' => function($faq){
+                        return Icon::edit(
+                            $this->url('Faq:Admin:Faq@editAction', $faq->getId()),
+                            $this->translate('Edit this pair')
+                        );
+                    },
+
+                    'remove' => function($faq){
+                        return Icon::remove(
+                            $this->url('Faq:Admin:Faq@deleteAction', $faq->getId()),
+                            $this->translate('Remove this pair')
+                        );
+                    }
+                )
+
+            ), $this->translator); ?>
 
             <?php if (empty($faqs)): ?>
             <div class="center-block">
@@ -87,35 +96,57 @@ defined('KRYSTAL') or die;
         </div>
 
         <div class="col-lg-4">
-            <?php if (!empty($categories)): ?>
             <h3><i class="glyphicon glyphicon-th-list"></i> <?php $this->show('Categories'); ?> <small>(<?php echo count($categories); ?>)</small></h3>
 
-            <table class="table table-hover table-bordered table-striped table-condensed">
-                <thead>
-                    <tr>
-                        <th class="text-center"><?php $this->show('#'); ?></th>
-                        <th class="text-center"><?php $this->show('Name'); ?></th>
-                        <th class="text-center"><?php $this->show('Order'); ?></th>
-                        <th class="text-center"><?php $this->show('Actions'); ?></th>
-                    </tr>
-                </thead>
+            <?= Grid::render($categories, array(
+                'tableClass' => 'table table-hover table-bordered table-striped table-condensed',
+                'rowAttributes' => array(
+                    'class' => function($category) use ($categoryId){
+                        return $category->getId() == $categoryId ? 'info' : null;
+                    }
+                ),
 
-                <tbody>
-                    <?php foreach ($categories as $category): ?>
-                    <tr class="<?php echo $category->getId() == $categoryId ? 'info' : null; ?>">
-                        <td class="text-center text-muted"><?php echo $category->getId(); ?></td>
-                        <td>
-                            <a href="<?php echo $this->mapUrl('Faq:Admin:Faq@categoryAction', array($category->getId()), 0); ?>"><?php echo $category->getName(); ?></a>
-                        </td>
-                        <td class="text-center"><?php echo $category->getOrder(); ?></td>
-                        <td class="text-center">
-                            <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Edit this pair'); ?>" data-button="edit" href="<?php echo $this->url('Faq:Admin:Category@editAction', $category->getId()); ?>"><i class="glyphicon glyphicon-pencil"></i></a>
-                            <a data-toggle="tooltip" data-placement="left" data-original-title="<?php $this->show('Remove this pair'); ?>" data-button="delete" data-url="<?php echo $this->url('Faq:Admin:Category@deleteAction', $category->getId()); ?>" href="#" ><i class="glyphicon glyphicon-remove"></i></a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                'columns' => array(
+                    array(
+                        'column' => 'id',
+                        'label' => '#'
+                    ),
+
+                    array(
+                        'column' => 'name',
+                        'value' => function($category){
+                            $url = $this->mapUrl('Faq:Admin:Faq@categoryAction', array($category->getId()), 0);
+                            return Element::link($category->getName(), $url);
+                        }
+                    ),
+
+                    array(
+                        'column' => 'order'
+                    )
+                ),
+
+                'actions' => array(
+                    'edit' => function($faq){
+                        return Icon::edit(
+                            $this->url('Faq:Admin:Category@editAction', $faq->getId()),
+                            $this->translate('Edit this category')
+                        );
+                    },
+
+                    'remove' => function($faq){
+                        return Icon::remove(
+                            $this->url('Faq:Admin:Category@deleteAction', $faq->getId()),
+                            $this->translate('Remove this category')
+                        );
+                    }
+                )
+
+            ), $this->translator); ?>
+
+            <?php if (empty($categories)): ?>
+            <div class="center-block">
+                <h2 class="text-center text-muted"><i class="glyphicon glyphicon-remove"></i> <?php $this->show('No categories'); ?></h2>
+            </div>
             <?php endif; ?>
         </div>
     </div>
