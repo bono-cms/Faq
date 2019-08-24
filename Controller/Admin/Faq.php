@@ -105,7 +105,8 @@ final class Faq extends AbstractController
         $faq = $this->getFaqManager()->fetchById($id, true);
 
         if ($faq !== false) {
-            return $this->createForm($faq, 'Edit the FAQ');
+            $name = $this->getCurrentProperty($faq, 'question');
+            return $this->createForm($faq, $this->translator->translate('Edit the FAQ "%s"', $name));
         } else {
             return false;
         }
