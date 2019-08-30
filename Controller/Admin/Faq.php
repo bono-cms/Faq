@@ -214,21 +214,18 @@ final class Faq extends AbstractController
 
             // Current page name
             $name = $this->getCurrentProperty($this->request->getPost('translation'), 'question');
+            $service->save($input);
 
             if (!empty($input['faq']['id'])) {
-                if ($service->update($input)) {
-                    $this->flashBag->set('success', 'The element has been updated successfully');
-                    $historyService->write('Faq', 'FAQ "%s" has been updated', $name);
-                    return '1';
-                }
+                $this->flashBag->set('success', 'The element has been updated successfully');
+                $historyService->write('Faq', 'FAQ "%s" has been updated', $name);
+                return '1';
 
             } else {
-                if ($service->add($input)) {
-                    $this->flashBag->set('success', 'The element has been created successfully');
+                $this->flashBag->set('success', 'The element has been created successfully');
 
-                    $historyService->write('Faq', 'FAQ "%s" has been added', $name);
-                    return $service->getLastId();
-                }
+                $historyService->write('Faq', 'FAQ "%s" has been added', $name);
+                return $service->getLastId();
             }
 
         } else {

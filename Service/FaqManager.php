@@ -15,7 +15,7 @@ use Cms\Service\AbstractManager;
 use Faq\Storage\FaqMapperInterface;
 use Krystal\Stdlib\VirtualEntity;
 
-final class FaqManager extends AbstractManager implements FaqManagerInterface
+final class FaqManager extends AbstractManager
 {
     /**
      * Any compliant faq mapper
@@ -88,38 +88,32 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
     }
 
     /**
+     * Fetches a faq bag by its associated id
+     * 
+     * @param string $id Faq id
+     * @param boolean $withTranslations Whether to fetch translations or not
+     * @return boolean|\Krystal\Stdlib\VirtualBag|boolean
+     */
+    public function fetchById($id, $withTranslations)
+    {
+        if ($withTranslations == true) {
+            return $this->prepareResults($this->faqMapper->fetchById($id, true));
+        } else {
+            return $this->prepareResult($this->faqMapper->fetchById($id, false));
+        }
+    }
+
+    /**
      * Saves a FAQ
      * 
      * @param array $input
      * @return boolean
      */
-    private function save(array $input)
+    public function save(array $input)
     {
         // Safe type-casting
         $input['faq']['order'] = (int) $input['faq']['order'];
         return $this->faqMapper->saveEntity($input['faq'], $input['translation']);
-    }
-
-    /**
-     * Adds a FAQ
-     * 
-     * @param array $input Raw form data
-     * @return boolean
-     */
-    public function add(array $input)
-    {
-        return $this->save($input);
-    }
-
-    /**
-     * Updates a FAQ
-     * 
-     * @param array $input Raw form data
-     * @return boolean
-     */
-    public function update(array $input)
-    {
-        return $this->save($input);
     }
 
     /**
@@ -143,40 +137,13 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
     }
 
     /**
-     * Fetches a faq bag by its associated id
+     * Deletes a FAQ by its associated id
      * 
-     * @param string $id Faq id
-     * @param boolean $withTranslations Whether to fetch translations or not
-     * @return boolean|\Krystal\Stdlib\VirtualBag|boolean
-     */
-    public function fetchById($id, $withTranslations)
-    {
-        if ($withTranslations == true) {
-            return $this->prepareResults($this->faqMapper->fetchById($id, true));
-        } else {
-            return $this->prepareResult($this->faqMapper->fetchById($id, false));
-        }
-    }
-
-    /**
-     * Deletes a faq by its associated id
-     * 
-     * @param string $id Faq's id
+     * @param string|array $id
      * @return boolean
      */
-    public function deleteById($id)
+    public function delete($id)
     {
         return $this->faqMapper->deleteEntity($id);
-    }
-
-    /**
-     * Deletes faqs by their associated ids
-     * 
-     * @param array $ids Array of ids
-     * @return boolean
-     */
-    public function deleteByIds(array $ids)
-    {
-        return $this->faqMapper->deleteEntity($ids);
     }
 }
