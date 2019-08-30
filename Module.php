@@ -27,7 +27,7 @@ final class Module extends AbstractCmsModule
         $categoryMapper = $this->getMapper('/Faq/Storage/MySQL/CategoryMapper');
 
         return array(
-            'faqManager' => new FaqManager($faqMapper, $this->getHistoryManager()),
+            'faqManager' => new FaqManager($faqMapper),
             'categoryManager' => new CategoryManager($categoryMapper, $faqMapper)
         );
     }

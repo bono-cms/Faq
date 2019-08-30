@@ -12,10 +12,8 @@
 namespace Faq\Service;
 
 use Cms\Service\AbstractManager;
-use Cms\Service\HistoryManagerInterface;
 use Faq\Storage\FaqMapperInterface;
 use Krystal\Stdlib\VirtualEntity;
-use Krystal\Security\Filter;
 
 final class FaqManager extends AbstractManager implements FaqManagerInterface
 {
@@ -27,35 +25,14 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
     private $faqMapper;
 
     /**
-     * History manager to keep track
-     * 
-     * @var \Cms\Service\HistoryManagerInterface
-     */
-    private $historyManager;
-
-    /**
      * State initialization
      * 
      * @param \Faq\Storage\FaqMapperInterface $faqMapper
-     * @param \Cms\Service\HistoryManagerInterface $historyManager
      * @return void
      */
-    public function __construct(FaqMapperInterface $faqMapper, HistoryManagerInterface $historyManager)
+    public function __construct(FaqMapperInterface $faqMapper)
     {
         $this->faqMapper = $faqMapper;
-        $this->historyManager = $historyManager;
-    }
-
-    /**
-     * Tracks activity
-     * 
-     * @param string $message
-     * @param string $placeholder
-     * @return boolean
-     */
-    private function track($message, $placeholder)
-    {
-        return $this->historyManager->write('Faq', $message, $placeholder);
     }
 
     /**
@@ -131,7 +108,6 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function add(array $input)
     {
-        //$this->track('FAQ "%s" has been added', $input['question']);
         return $this->save($input);
     }
 
@@ -143,7 +119,6 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function update(array $input)
     {
-        //$this->track('FAQ "%s" has been updated', $input['question']);
         return $this->save($input);
     }
 
@@ -191,14 +166,7 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function deleteById($id)
     {
-        //$name = Filter::escape($this->faqMapper->fetchQuestionById($id));
-
-        if ($this->faqMapper->deleteEntity($id)) {
-            //$this->track('FAQ "%s" has been removed', $name);
-            return true;
-        } else {
-            return false;
-        }
+        return $this->faqMapper->deleteEntity($id);
     }
 
     /**
@@ -209,9 +177,6 @@ final class FaqManager extends AbstractManager implements FaqManagerInterface
      */
     public function deleteByIds(array $ids)
     {
-        $this->faqMapper->deleteEntity($ids);
-
-        $this->track('Batch removal of %s faq', count($ids));
-        return true;
+        return $this->faqMapper->deleteEntity($ids);
     }
 }

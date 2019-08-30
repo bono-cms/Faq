@@ -159,6 +159,7 @@ final class Faq extends AbstractController
      */
     public function deleteAction($id)
     {
+        $historyService = $this->getService('Cms', 'historyManager');
         $service = $this->getModuleService('faqManager');
 
         // Batch removal
@@ -168,14 +169,21 @@ final class Faq extends AbstractController
             $service->deleteByIds($ids);
             $this->flashBag->set('success', 'Selected elements have been removed successfully');
 
+            $historyService->write('Faq', 'Batch removal of %s faq', count($ids));
+
         } else {
             $this->flashBag->set('warning', 'You should select at least one element to remove');
         }
 
         // Single removal
         if (!empty($id)) {
+            $faq = $this->getFaqManager()->fetchById($id, false);
+
             $service->deleteById($id);
             $this->flashBag->set('success', 'Selected element has been removed successfully');
+
+            // Save in history
+            $historyService->write('Faq', 'FAQ "%s" has been removed', $faq->getQuestion());
         }
 
         return '1';
@@ -202,16 +210,23 @@ final class Faq extends AbstractController
 
         if (1) {
             $service = $this->getModuleService('faqManager');
+            $historyService = $this->getService('Cms', 'historyManager');
+
+            // Current page name
+            $name = $this->getCurrentProperty($this->request->getPost('translation'), 'question');
 
             if (!empty($input['faq']['id'])) {
                 if ($service->update($input)) {
                     $this->flashBag->set('success', 'The element has been updated successfully');
+                    $historyService->write('Faq', 'FAQ "%s" has been updated', $name);
                     return '1';
                 }
 
             } else {
                 if ($service->add($input)) {
                     $this->flashBag->set('success', 'The element has been created successfully');
+
+                    $historyService->write('Faq', 'FAQ "%s" has been added', $name);
                     return $service->getLastId();
                 }
             }
