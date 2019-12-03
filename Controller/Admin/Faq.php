@@ -166,7 +166,7 @@ final class Faq extends AbstractController
         if ($this->request->hasPost('batch')) {
             $ids = array_keys($this->request->getPost('batch'));
 
-            $service->deleteByIds($ids);
+            $service->delete($ids);
             $this->flashBag->set('success', 'Selected elements have been removed successfully');
 
             $historyService->write('Faq', 'Batch removal of %s faq', count($ids));
@@ -179,7 +179,7 @@ final class Faq extends AbstractController
         if (!empty($id)) {
             $faq = $this->getFaqManager()->fetchById($id, false);
 
-            $service->deleteById($id);
+            $service->delete($id);
             $this->flashBag->set('success', 'Selected element has been removed successfully');
 
             // Save in history
