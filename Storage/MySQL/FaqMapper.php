@@ -104,6 +104,11 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
             $db->paginate($page, $limit);
         }
 
+        // Apply limit, if required
+        if ($page null && $limit !== null) {
+            $db->limit($limit);
+        }
+
         return $db->queryAll();
     }
 
