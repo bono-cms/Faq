@@ -4,6 +4,7 @@ CHANGELOG
 1.2
 ---
 
+ * Added dedicated site service
  * Moved history tracker of out main service into the main controller
  * Minor bug fixes
  * Added support for grouping by categories
