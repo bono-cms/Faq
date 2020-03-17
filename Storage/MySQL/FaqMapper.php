@@ -105,7 +105,7 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
         }
 
         // Apply limit, if required
-        if ($page null && $limit !== null) {
+        if ($page == null && $limit !== null) {
             $db->limit($limit);
         }
 
