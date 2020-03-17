@@ -34,10 +34,11 @@ final class SiteService
     /**
      * Get all FAQs
      * 
+     * @param mixed $limit
      * @return array
      */
-    public function getAll()
+    public function getAll($limit = null)
     {
-        return $this->faqManager->fetchAllPublished();
+        return $this->faqManager->fetchAllPublished(null, $limit);
     }
 }

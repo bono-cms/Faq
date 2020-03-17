@@ -79,12 +79,13 @@ final class FaqManager extends AbstractManager
     /**
      * Fetches all published entities
      * 
-     * @param string $categoryId Optional Category ID filter
+     * @param mixed $categoryId Optional Category ID filter
+     * @param mixed $limit Optional limit
      * @return array
      */
-    public function fetchAllPublished($categoryId = null)
+    public function fetchAllPublished($categoryId = null, $limit = null)
     {
-        return $this->prepareResults($this->faqMapper->fetchAllByPage(true, $categoryId, null, null));
+        return $this->prepareResults($this->faqMapper->fetchAllByPage(true, $categoryId, null, $limit));
     }
 
     /**
