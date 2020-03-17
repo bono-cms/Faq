@@ -79,10 +79,10 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
      * @param boolean $published Whether to filter by published records
      * @param string $categoryId Optional category id
      * @param integer $page Current page number
-     * @param integer $itemsPerPage Per page count
+     * @param integer $limit Per page count
      * @return array
      */
-    public function fetchAllByPage($published, $categoryId = null, $page = null, $itemsPerPage = null)
+    public function fetchAllByPage($published, $categoryId = null, $page = null, $limit = null)
     {
         $db = $this->createEntitySelect($this->getColumns())
                    ->whereEquals(FaqTranslationMapper::column('lang_id'), $this->getLangId());
@@ -100,8 +100,13 @@ final class FaqMapper extends AbstractMapper implements FaqMapperInterface
         }
 
         // Optional pagination
-        if ($page !== null && $itemsPerPage !== null) {
-            $db->paginate($page, $itemsPerPage);
+        if ($page !== null && $limit !== null) {
+            $db->paginate($page, $limit);
+        }
+
+        // Apply limit, if required
+        if ($page null && $limit !== null) {
+            $db->limit($limit);
         }
 
         return $db->queryAll();

@@ -67,24 +67,25 @@ final class FaqManager extends AbstractManager
      * Fetches all entities filtered by pagination
      * 
      * @param integer $page Current page number
-     * @param integer $itemsPerPage Per page count
+     * @param integer $limit Per page count
      * @param boolean $published Whether to fetch only published ones
      * @return array
      */
-    public function fetchAllByPage($published, $categoryId, $page, $itemsPerPage)
+    public function fetchAllByPage($published, $categoryId, $page, $limit)
     {
-        return $this->prepareResults($this->faqMapper->fetchAllByPage($published, $categoryId, $page, $itemsPerPage));
+        return $this->prepareResults($this->faqMapper->fetchAllByPage($published, $categoryId, $page, $limit));
     }
 
     /**
      * Fetches all published entities
      * 
-     * @param string $categoryId Optional Category ID filter
+     * @param mixed $categoryId Optional Category ID filter
+     * @param mixed $limit Optional limit
      * @return array
      */
-    public function fetchAllPublished($categoryId = null)
+    public function fetchAllPublished($categoryId = null, $limit = null)
     {
-        return $this->prepareResults($this->faqMapper->fetchAllByPage(true, $categoryId, null, null));
+        return $this->prepareResults($this->faqMapper->fetchAllByPage(true, $categoryId, null, $limit));
     }
 
     /**

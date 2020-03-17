@@ -35,10 +35,10 @@ interface FaqMapperInterface
      * @param boolean $published Whether to filter by published records
      * @param string $categoryId Optional category id
      * @param integer $page Current page number
-     * @param integer $itemsPerPage Per page count
+     * @param integer $limit Per page count
      * @return \Krystal\Db\Sql\Db
      */
-    public function fetchAllByPage($published, $categoryId = null, $page = null, $itemsPerPage = null);
+    public function fetchAllByPage($published, $categoryId = null, $page = null, $limit = null);
 
     /**
      * Delete all items by associated category ID
